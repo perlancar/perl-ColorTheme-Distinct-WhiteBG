@@ -57,6 +57,9 @@ sub new {
     my $class = shift;
     my %args = @_;
 
+    if (!$args{n}) { die "Please specify a positive n" }
+    if ($args{n} >= @colors) { die "There are only ".(0+@colors)." colors in the theme, please specify n not greater than this" }
+
     my $self = $class->SUPER::new(%args);
     $self;
 }
@@ -64,7 +67,7 @@ sub new {
 sub list_items {
     my $self = shift;
 
-    my @list = 1 .. $self->{n};
+    my @list = 1 .. $self->{args}{n};
     wantarray ? @list : \@list;
 }
 
