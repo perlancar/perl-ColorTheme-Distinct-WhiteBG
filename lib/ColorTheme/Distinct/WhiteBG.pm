@@ -41,8 +41,8 @@ _
         n => {
             summary => 'Number of colors',
             schema => ['int*', between=>[1, 0+@colors]],
-            req => 1,
             pos => 0,
+            default => 0+@colors,
         },
     },
     examples => [
@@ -57,8 +57,9 @@ sub new {
     my $class = shift;
     my %args = @_;
 
+    $args{n} //= 0+@colors;
     if (!$args{n}) { die "Please specify a positive n" }
-    if ($args{n} >= @colors) { die "There are only ".(0+@colors)." colors in the theme, please specify n not greater than this" }
+    if ($args{n} > @colors) { die "There are only ".(0+@colors)." colors in the theme, please specify n not greater than this" }
 
     my $self = $class->SUPER::new(%args);
     $self;
@@ -73,7 +74,7 @@ sub list_items {
 
 sub get_item_color {
     my ($self, $name, $args) = @_;
-    $colors[$name+0];
+    $colors[$name-1];
 }
 
 1;
